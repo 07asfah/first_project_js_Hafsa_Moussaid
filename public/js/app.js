@@ -1,24 +1,32 @@
-
+// the object to stock the user data
+const bank = {
+    users: []
+};
 // the user should choose the option (sign Up, Login, Changing the password) that he wants access to:
 
 function checkin () {
     let User = prompt("choose the option: `signUp`, `Login`, or `reset Password`")
 
-    switch (User) {
-        case `signUp`:
-            signUp();
-            return checkin()
-        case `Login`:
-            login();
-            return checkin()
-        case `reset`:
-            reset_password();
-            return checkin()
-        default:
-            alert(`invalid option ${User} , choose the right option`)
-            return checkin()
-    }  
-}
+        switch (User) {
+            case `signUp`:
+                signUp();
+                return checkin()
+            case `Login`:
+                login();
+                return checkin()
+                default:
+                alert(`invalid option ${User} , choose the right option`)
+                return checkin()
+            case `reset password`:
+                reset_password();
+                return checkin()
+        }  
+    }
+
+    let userfullName = '';
+    let userEmail = '';
+    let userAge = '';
+    let userPassword = '';
 
 
 // Option: SIGN UP;
@@ -26,9 +34,13 @@ function checkin () {
 function signUp() {
      //*Name:
     let fullName = prompt("Enter your Full name");
-    if (!fullName) {  // if the user doesn't enter any name he get this alert
+    while (true) { // return to the only failed step
+        fullName = prompt("Enter your Full name");
+        if (!fullName) {  // if the user doesn't enter any name he get this alert
         alert('the option is EMPTY! please enter your full name')
-        return;
+        return signUp();
+    }
+    break;
     }
 
     // the name shouldn't be less than 5 characters (no spaces)
@@ -52,7 +64,7 @@ function signUp() {
 
 
     //*Email:
-        let email = '';
+        let email;
         let validEmail = false;
         while (!validEmail) {  // if the user doesn't enter any email he get this alert
             email = prompt("Enter an E-mail")
@@ -69,7 +81,7 @@ function signUp() {
             continue;
             
             // '.' symbols
-        } if (email.split('.').length - 1 != 1) {
+        } if (email.split('.').length - 1 < 1) {
             alert("the email should contain one '.'");
             email = prompt("Enter an e-mail");
             continue;
@@ -96,9 +108,7 @@ function signUp() {
                 break;
             }
         }
-            validEmail = true;
         } 
-
         if (!uniqueEmail) {
             alert("this email is used enter a new one");
             return;
@@ -168,35 +178,30 @@ function signUp() {
         } while (password !== confirmPassword);
         alert("password accepted: " + password);
 
+        bank.users.push({
+            fullName: fullName,
+            email: email,
+            age: age,
+            password: password,
+            balance: 400,
+        });
+        alert("Registration complete!");
+
+        console.log(`User registered: ${fullName}, Email: ${email}, Age: ${age}`);
 }
 
-    // Full Name
-    let userFullName = fullName;
-    // Email
-    let userEmail = email;
-    // Age
-    let userAge = age;
-    // Password
-    let userPassword = password;
-
-    bank.users.push({
-        fullName: userFullName,
-        email: userEmail,
-        age: userAge,
-        password: userPassword,
-    })
+    
 //* Option: Log In;
-
 function login() {
     //Email 
     let email = prompt('enter your email');
-    for (let user of bank.users) {
-        for(let user of bank.users) { // chechin if the email of the user is in database
+    let userfound = null;
+    for (let user of bank.users) { // chechin if the email of the user is in database
             if (user.email === email) {
-                user.found = true;
+                userfound = user;
                 break;
             }
-        }
+        
     }
     if (!userfound) {
         alert(`No user found with this ${email}`); 
@@ -205,24 +210,33 @@ function login() {
     alert(`the email is saved `)
 
     let password = prompt('enter the password');
-        if (user.password === password) {
+        if (userfound.password === password) {
             alert('login successfully');
         } else {
             alert('Incorrect password')
         }
+        console.log(`User logged in: ${email}`);
 }
+
+
 
 //* Option:  changing Password ; 
 function reset_password() {
     //*Email
     let email = prompt('enter your email');
     for (let index = 0; index < bank.users.length; index++) {
-        for(let user of Bank.users) { // chechin if the email of the user is in database
+        for(let user of bank.users) { // chechin if the email of the user is in database
             if (user.email === email) {
-                user.found = true;
+                userfound = user;
                 break;
             }
         }
+    }
+    if (userfound) {
+        userfound.password = password;
+        alert("password reset")
+        console.log(`Password reset for: ${userfound.email}`);
+        
     }
     if (!userfound) {
         alert(`No user found with this ${email}`); 
@@ -259,15 +273,6 @@ function reset_password() {
 
 
 //* The classes: Bank, loan, Investement;
-// the object to stock the user data
-class bank {
-    constructor() {
-        this.users = [];
-    }
-}
-
-
-
 class user {
     constructor(fullName, email, age, password, balance) {
         this.fullName = fullName;
@@ -297,6 +302,8 @@ class user {
     }
 
 }
+
+checkin()
 
 
 
