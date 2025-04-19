@@ -92,9 +92,10 @@ function signUp() {
             alert("Email must contain more than 10 characters")
             return ;
         }
+        // unique email
         if (!uniqueEmail(email)) {
-            alert("this email is already taken")
-            return ;
+            alert("This email is already taken");
+            return;  
         }
             validEmail = true;
         } 
@@ -178,8 +179,8 @@ function signUp() {
 function login() {
     //Email 
     let email = prompt('enter your email');
-    for (let index = 0; index < bank.users.length; index++) {
-        for(let user of Bank.users) { // chechin if the email of the user is in database
+    for (let user of bank.users) {
+        for(let user of bank.users) { // chechin if the email of the user is in database
             if (user.email === email) {
                 user.found = true;
                 break;
@@ -243,9 +244,48 @@ function reset_password() {
         }
     } while (password !== confirmPassword);
     alert("password accepted: " + password);
+}
+
+
+//* The classes: Bank, loan, Investement;
+// the object to stock the user data
+class bank {
+    constructor() {
+        this.users = [];
+    }
+}
+
+class user {
+    constructor(fullName, email, age, password, balance) {
+        this.fullName = fullName;
+        this.email = email;
+        this.age = age;
+        this.password = password;
+        this.balance = balance;
+    }
+
+    withdrawal(amount) {
+        if (amount <= this.balance) {
+            this.balance -= amount;
+            console.log(`withdraw: $${amount}`);
+            
+        } else {
+            console.log(`want to withdraw: $${amount}`);
+            console.log(`Insufficient balance`);
+        }
+    }
+    displaybalance() {
+        console.log(`account balance: $${this.balance}`);
+    }
+    deposit(amount) {
+        this.balance += amount;
+        console.log(`deposited: $${amount}`);
+        
+    }
 
 }
 
+const bank = new bank(); 
 
 
 
