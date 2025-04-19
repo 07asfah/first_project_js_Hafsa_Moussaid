@@ -58,32 +58,28 @@ function signUp() {
             email = prompt("Enter an E-mail")
             if (!email) {
                 alert('the option is EMPTY! please enter your email');
-                email = prompt("Enter an e-mail");
                 return;
             }
-            
-            
             // delete space 
             email = email.trim().toLowerCase()
-            
             // should contain @
             if ((!email.includes('@')) || email.split('@').length !== 2) {
                 alert("the email should contain one '@' ");
             email = prompt("Enter an e-mail");
-            return;
+            continue;
             
             // '.' symbols
         } if (email.split('.').length - 1 != 1) {
             alert("the email should contain one '.'");
             email = prompt("Enter an e-mail");
-            return;
+            continue;
         } 
         
         // spaces
         if (email.includes(' ')) {
             alert('your email contain spaces please enter a valid mail');
             email = prompt("Enter an e-mail");
-            return;
+            continue; 
         } 
         
         // the email should contain more than 10 characters and unique
@@ -93,12 +89,20 @@ function signUp() {
             return ;
         }
         // unique email
-        if (!uniqueEmail(email)) {
-            alert("This email is already taken");
-            return;  
+        let uniqueEmail = false;
+        for (let user of bank.users) {
+            if (user.email === email) {
+                uniqueEmail = true;
+                break;
+            }
         }
             validEmail = true;
         } 
+
+        if (!uniqueEmail) {
+            alert("this email is used enter a new one");
+            return;
+        }
 
         alert("Email registed: " + email);
     
@@ -107,7 +111,7 @@ function signUp() {
         let age = prompt('enter your age');
         if (!age) {  // if the user doesn't enter any number he get this alert
             alert('the option is EMPTY! please enter your age')
-            return age;
+            return;
         } 
         // leading, trailing, middle spaces
         age = age.trim();
@@ -122,7 +126,7 @@ function signUp() {
     
         if (noDigit) {
             alert('the age must be in digits!');
-            return age;
+            return;
         }
 
         // no savin' of the age if it has 0 characters
@@ -174,6 +178,13 @@ function signUp() {
     let userAge = age;
     // Password
     let userPassword = password;
+
+    bank.users.push({
+        fullName: userFullName,
+        email: userEmail,
+        age: userAge,
+        password: userPassword,
+    })
 //* Option: Log In;
 
 function login() {
@@ -255,6 +266,8 @@ class bank {
     }
 }
 
+
+
 class user {
     constructor(fullName, email, age, password, balance) {
         this.fullName = fullName;
@@ -285,7 +298,6 @@ class user {
 
 }
 
-const bank = new bank(); 
 
 
 
