@@ -175,7 +175,30 @@ function signUp() {
     let userPassword = password;
 //* Option: Log In;
 
+function login() {
+    //Email 
+    let email = prompt('enter your email');
+    for (let index = 0; index < bank.users.length; index++) {
+        for(let user of Bank.users) { // chechin if the email of the user is in database
+            if (user.email === email) {
+                user.found = true;
+                break;
+            }
+        }
+    }
+    if (!userfound) {
+        alert(`No user found with this ${email}`); 
+        return;
+    }
+    alert(`the email is saved `)
 
+    let password = prompt('enter the password');
+        if (user.password === password) {
+            alert('login successfully');
+        } else {
+            alert('Incorrect password')
+        }
+}
 
 //* Option:  changing Password ; 
 
