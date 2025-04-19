@@ -201,7 +201,50 @@ function login() {
 }
 
 //* Option:  changing Password ; 
+function reset_password() {
+    //*Email
+    let email = prompt('enter your email');
+    for (let index = 0; index < bank.users.length; index++) {
+        for(let user of Bank.users) { // chechin if the email of the user is in database
+            if (user.email === email) {
+                user.found = true;
+                break;
+            }
+        }
+    }
+    if (!userfound) {
+        alert(`No user found with this ${email}`); 
+        return;
+    }
+    let password = prompt("Enter a password")
+    if (!password) {
+        alert('enter a valid password')
+        return password;
+    }
+    // leading or trailing spaces.
+    password = password.trim();
+    //space in the middle
+    if (password.includes(' ')) {
+        alert('the password should not contain space')
+        return password;
+    }
+    //requiring at least one character
+    const specialChar = /[#@\-+\*/]/.test(password);
+    if (!specialChar) {
+        alert("password must contain at least one special character");
+        return password;
+    }
+    //confirmation of the password
+    let confirmPassword ;
+    do {
+        confirmPassword = prompt("confirm your password")
+        if (password !== confirmPassword) {
+            alert("password doesn't match");
+        }
+    } while (password !== confirmPassword);
+    alert("password accepted: " + password);
 
+}
 
 
 
